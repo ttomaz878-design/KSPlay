@@ -83,8 +83,10 @@ class AppUpdaterController internal constructor(
         checkForUpdates(force = false, showNoUpdateFeedback = false)
     }
 
+    private val updatesPaused = true
+
     fun checkForUpdates(force: Boolean, showNoUpdateFeedback: Boolean) {
-        if (!AppFeaturePolicy.inAppUpdaterEnabled || !AppUpdaterPlatform.isSupported) {
+        if (updatesPaused || !AppFeaturePolicy.inAppUpdaterEnabled || !AppUpdaterPlatform.isSupported) {
             if (showNoUpdateFeedback) {
                 scope.launch {
                     NuvioToastController.show(getString(Res.string.updates_not_available))
